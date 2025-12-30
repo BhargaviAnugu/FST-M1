@@ -121,7 +121,7 @@ public class Activity1 {
         driver.findElement(AppiumBy.xpath("//android.widget.TextView[@resource-id=\"android:id/title\" and @text=\"Edit To-Do Task\"]")).click();
         driver.findElement(AppiumBy.id("com.app.todolist:id/tv_todo_list_deadline")).click();
 
-        // Select next Saturday (example)
+        // Select next Saturday (Jan 03, 2026)
         driver.findElement(AppiumBy.xpath("//android.widget.ImageButton[@content-desc=\"Next month\"]")).click();
         driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc=\"03 January 2026\"]")).click();
         driver.findElement(AppiumBy.xpath("//android.widget.Button[@resource-id=\"com.app.todolist:id/bt_deadline_ok\"]")).click();
@@ -211,4 +211,5 @@ public class Activity1 {
    
 
 }
+
 
