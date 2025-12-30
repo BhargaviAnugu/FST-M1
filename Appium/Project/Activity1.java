@@ -143,7 +143,7 @@ public class Activity1 {
         driver.findElement(AppiumBy.xpath("(//android.widget.CheckBox[@resource-id=\"com.app.todolist:id/cb_task_done\"])[1]")).click();
         driver.findElement(AppiumBy.xpath("(//android.widget.CheckBox[@resource-id=\"com.app.todolist:id/cb_task_done\"])[2]")).click();
 
-        // Long press third task (Regression Testing)
+        // Long press third task (Activity3)
         WebElement thirdTask = driver.findElement(
                 AppiumBy.xpath("//android.widget.TextView[@resource-id='com.app.todolist:id/tv_exlv_task_name' and @text='Activity3']")
         );
@@ -211,3 +211,4 @@ public class Activity1 {
    
 
 }
+
