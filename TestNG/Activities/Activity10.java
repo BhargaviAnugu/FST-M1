@@ -2,10 +2,16 @@ package examples;
 
 import static org.testng.Assert.assertEquals;
 import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -27,8 +33,6 @@ public class Activity10 {
     public void beforeClass() {
         driver = new FirefoxDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
-        // Open browser
         driver.get("https://training-support.net/webelements/simple-form");
     }
 
@@ -42,14 +46,27 @@ public class Activity10 {
 
             // Get first sheet from the workbook
             XSSFSheet sheet = workbook.getSheetAt(0);
-
+            DataFormatter formatter = new DataFormatter();
             // Iterate through each rows one by one
             for (Row cells : sheet) {
                 // Temp variable
                 List<String> rowData = new ArrayList<String>();
+                
                 for (Cell cell : cells) {
                     // Store row data
-                    rowData.add(cell.getStringCellValue());
+                    //rowData.add(cell.getStringCellValue());
+                	//String cellValue = formatter.formatCellValue(cell);
+                	//rowData.add(cellValue); 
+                	CellType celltype = cell.getCellType();
+                	if(celltype== CellType.NUMERIC && DateUtil.isCellDateFormatted(cell))
+                	{
+                		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                		String formattedDate =sdf.format(cell.getDateCellValue());
+                		rowData.add(formattedDate);
+                	}else {
+                		String value = formatter.formatCellValue(cell);
+                		rowData.add(value);
+                	}
                 }
                 // Store row data in List
                 data.add(rowData);
@@ -82,8 +99,14 @@ public class Activity10 {
         // Enter the email
         driver.findElement(By.id("email")).sendKeys(rows.get(1));
 
+        String excelDate = rows.get(2);
+        
+        DateTimeFormatter inputformat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter browseFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = LocalDate.parse(excelDate, inputformat).format(browseFormat);
         // Enter the Date of the event
-        driver.findElement(By.name("event-date")).sendKeys(rows.get(2).replaceAll("\"", ""));
+        //driver.findElement(By.name("event-date")).sendKeys(rows.get(2).replaceAll("\"", ""));
+        driver.findElement(By.name("event-date")).sendKeys(formattedDate);
 
         // Enter additional details
         driver.findElement(By.id("additional-details")).sendKeys(rows.get(3));
@@ -105,5 +128,3 @@ public class Activity10 {
         driver.quit();
     }
 }
-
-
